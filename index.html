@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smoky Effect - Perfect Sequence</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #A0522D;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        span {
+            font-family: Georgia, serif;
+            font-weight: bold;
+            font-size: 6rem;
+            color: #f0f0f0;
+            display: inline-block;
+            margin: 0 20px; /* Mais espaço entre as letras */
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        /* Gatilho da Animação */
+        .animate-smoke span {
+            animation: smokyCycle 6s ease-in-out forwards;
+        }
+
+        /* LÓGICA DE SEQUÊNCIA TOTAL:
+           - Delays crescentes na ida (S -> Y)
+           - Durações decrescentes para forçar o Y a terminar muito antes do S (Y -> S)
+        */
+        
+        /* S */ .animate-smoke span:nth-child(1) { animation-delay: 0.0s; animation-duration: 11.0s; }
+        /* M */ .animate-smoke span:nth-child(2) { animation-delay: 0.6s; animation-duration: 10.0s; }
+        /* O */ .animate-smoke span:nth-child(3) { animation-delay: 1.2s; animation-duration: 9.0s; }
+        /* K */ .animate-smoke span:nth-child(4) { animation-delay: 1.8s; animation-duration: 8.0s; }
+        /* Y */ .animate-smoke span:nth-child(5) { animation-delay: 2.4s; animation-duration: 7.0s; }
+
+        @keyframes smokyCycle {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                filter: blur(0);
+                opacity: 1;
+            }
+            /* Subida (Ida) */
+            25% {
+                transform: translateY(-280px) scale(3) rotate(25deg);
+                filter: blur(40px);
+                opacity: 0;
+            }
+            /* Pausa no topo (Invisível) */
+            55% {
+                transform: translateY(-280px) scale(3) rotate(25deg);
+                filter: blur(40px);
+                opacity: 0;
+            }
+            /* Descida (Volta) */
+            100% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                filter: blur(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            span { font-size: 3rem; margin: 0 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" onmouseenter="startAnimation(this)">
+        <span>s</span>
+        <span>m</span>
+        <span>o</span>
+        <span>k</span>
+        <span>y</span>
+    </div>
+
+    <script>
+        function startAnimation(element) {
+            if (element.classList.contains('animate-smoke')) return;
+
+            element.classList.add('animate-smoke');
+
+            // Tempo total para resetar o gatilho (acompanha a letra mais lenta)
+            setTimeout(() => {
+                element.classList.remove('animate-smoke');
+            }, 11500);
+        }
+    </script>
+
+</body>
+</html>
